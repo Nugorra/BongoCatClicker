@@ -13,7 +13,7 @@ pydirectinput.PAUSE = 0
 # ── CONFIG ──────────────────────────────────────────────────────────────────
 BONGO_WINDOW_TITLE = "BongoCat" # adjust if title differs in your language
 WINDOW_TITLE = "Bongo Cat Clicker"   # adjust if title differs in your language
-TOGGLE_KEY   = "P"
+TOGGLE_KEY   = "F6"
 INTERVAL_MIN = 0.02
 INTERVAL_MAX = 0.03
 HOLD_MIN     = 0.03
