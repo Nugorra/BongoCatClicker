@@ -13,11 +13,11 @@ pydirectinput.PAUSE = 0
 # ── CONFIG ──────────────────────────────────────────────────────────────────
 BONGO_WINDOW_TITLE = "BongoCat" # adjust if title differs in your language
 WINDOW_TITLE = "Bongo Cat Clicker"   # adjust if title differs in your language
-TOGGLE_KEY   = "P"
-INTERVAL_MIN = 0.02
-INTERVAL_MAX = 0.03
-HOLD_MIN     = 0.03
-HOLD_MAX     = 0.04
+TOGGLE_KEY   = "F6"
+INTERVAL_MIN = 0.005
+INTERVAL_MAX = 0.01
+HOLD_MIN     = 0.008
+HOLD_MAX     = 0.015
 DEBOUNCE     = 0.4
 # ────────────────────────────────────────────────────────────────────────────
 KEYS = [
@@ -29,12 +29,24 @@ KEYS = [
 if TOGGLE_KEY.lower() in KEYS:
     KEYS.remove(TOGGLE_KEY.lower())
 
+INPUTS = KEYS
+
 running      = False
 lock         = threading.Lock()
 _last_toggle = 0.0
 status_label = None
 btn_toggle   = None
 root         = None
+
+def press_inputs(inputs):
+    try:
+        for input_name in inputs:
+            pydirectinput.keyDown(input_name)
+            time.sleep(random.uniform(HOLD_MIN, HOLD_MAX))
+        for input_name in inputs:
+            pydirectinput.keyUp(input_name)
+    except Exception as e:
+        print(f"[press] Error on inputs {inputs}: {e}")
 
 def find_and_focus():
     hwnd = win32gui.FindWindow(None, BONGO_WINDOW_TITLE)
@@ -68,7 +80,9 @@ def auto_press_loop():
             last_focus = now
 
         try:
-            press_key(random.choice(KEYS))
+            batch_size = min(1000, len(INPUTS))
+            inputs_to_press = random.sample(INPUTS, batch_size)
+            press_inputs(inputs_to_press)
         except Exception as e:
             print(f"[loop] Error: {e}")
 
